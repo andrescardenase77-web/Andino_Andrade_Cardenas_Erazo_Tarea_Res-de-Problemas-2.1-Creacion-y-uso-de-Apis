@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../features/clientes/presentation/pages/cliente_list_page.dart';
 import '../../features/productos/presentation/pages/producto_catalog_page.dart';
-// import '../../features/pedidos/presentation/pages/order_list_page.dart';
-// import '../../features/pedidos/presentation/pages/order_creation_page.dart';
+import '../../features/pedidos/presentation/pages/order_list_page.dart';
+import '../../features/pedidos/presentation/pages/order_creation_page.dart';
 
 class AppRoutes {
   AppRoutes._();
@@ -19,8 +19,8 @@ class AppRoutes {
       inicio: (_) => const ProductoCatalogPage(),
       productos: (_) => const ProductoCatalogPage(),
       clientes: (_) => const ClienteListPage(),
-      // pedidos: (_) => const OrderListPage(),
-      // crearPedido: (_) => const OrderCreationPage(),
+      pedidos: (_) => const OrderListPage(),
+      crearPedido: (_) => const OrderCreationPage(),
     };
   }
 }

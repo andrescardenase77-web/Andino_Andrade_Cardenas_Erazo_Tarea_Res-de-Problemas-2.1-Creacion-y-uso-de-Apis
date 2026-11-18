@@ -15,7 +15,12 @@ import '../../features/productos/domain/usecases/get_productos.dart';
 import '../../features/productos/domain/usecases/update_stock.dart';
 import '../../features/productos/presentation/viewmodels/producto_viewmodel.dart';
 
-// import '../../features/pedidos/presentation/viewmodels/pedido_viewmodel.dart';
+import '../../features/pedidos/data/datasources/pedido_remote_datasource.dart';
+import '../../features/pedidos/data/repositories/pedido_repository_impl.dart';
+import '../../features/pedidos/domain/usecases/calculate_discount.dart';
+import '../../features/pedidos/domain/usecases/create_pedido.dart';
+import '../../features/pedidos/domain/usecases/update_estado_pedido.dart';
+import '../../features/pedidos/presentation/viewmodels/pedido_viewmodel.dart';
 
 List<SingleChildWidget> getAppProviders() {
   final apiClient = ApiClient();
@@ -29,6 +34,12 @@ List<SingleChildWidget> getAppProviders() {
   final productoRepository = ProductoRepositoryImpl(productoRemoteDataSource);
   final getProductosUseCase = GetProductos(productoRepository);
   final updateStockUseCase = UpdateStock(productoRepository);
+
+  final pedidoRemoteDataSource = PedidoRemoteDataSourceImpl(apiClient);
+  final pedidoRepository = PedidoRepositoryImpl(pedidoRemoteDataSource);
+  final createPedidoUseCase = CreatePedido(pedidoRepository);
+  final updateEstadoPedidoUseCase = UpdateEstadoPedido(pedidoRepository);
+  final calculateDiscountUseCase = CalculateDiscount();
 
   return [
     Provider<ApiClient>.value(value: apiClient),
@@ -45,8 +56,13 @@ List<SingleChildWidget> getAppProviders() {
         productoRepository,
       ),
     ),
-    // ChangeNotifierProvider<PedidoViewModel>(
-    //   create: (_) => PedidoViewModel(...),
-    // ),
+    ChangeNotifierProvider<PedidoViewModel>(
+      create: (_) => PedidoViewModel(
+        createPedidoUseCase,
+        updateEstadoPedidoUseCase,
+        calculateDiscountUseCase,
+        pedidoRepository,
+      ),
+    ),
   ];
 }
