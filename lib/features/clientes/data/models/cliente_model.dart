@@ -8,12 +8,15 @@ class ClienteModel extends Cliente {
     required super.email,
   });
 
-  factory ClienteModel.fromJson(Map<String, dynamic> json) => ClienteModel(
-        id: json['id'] as int?,
-        nombre: json['nombre'] as String,
-        telefono: json['telefono'] as String,
-        email: json['email'] as String,
-      );
+  factory ClienteModel.fromJson(Map<String, dynamic> json) {
+    final rawId = json['id'];
+    return ClienteModel(
+      id: rawId is int ? rawId : int.tryParse(rawId?.toString() ?? ''),
+      nombre: (json['nombre'] ?? '').toString(),
+      telefono: (json['telefono'] ?? '').toString(),
+      email: (json['email'] ?? '').toString(),
+    );
+  }
 
   factory ClienteModel.fromEntity(Cliente c) => ClienteModel(
         id: c.id,

@@ -78,6 +78,7 @@ class _OrderCreationTemplateState extends State<OrderCreationTemplate> {
             ),
             const SizedBox(height: 16),
             DropdownButtonFormField<Cliente>(
+              isExpanded: true,
               decoration: const InputDecoration(
                 labelText: 'Cliente',
                 hintText: 'Seleccione un cliente',
@@ -87,7 +88,7 @@ class _OrderCreationTemplateState extends State<OrderCreationTemplate> {
               items: widget.clientes.map((c) {
                 return DropdownMenuItem<Cliente>(
                   value: c,
-                  child: Text(c.nombre),
+                  child: Text(c.nombre, overflow: TextOverflow.ellipsis),
                 );
               }).toList(),
               onChanged: (c) => setState(() => _selectedCliente = c),
@@ -96,6 +97,7 @@ class _OrderCreationTemplateState extends State<OrderCreationTemplate> {
             ),
             const SizedBox(height: 16),
             DropdownButtonFormField<Producto>(
+              isExpanded: true,
               decoration: const InputDecoration(
                 labelText: 'Producto (solo con stock)',
                 hintText: 'Seleccione un producto',
@@ -105,7 +107,10 @@ class _OrderCreationTemplateState extends State<OrderCreationTemplate> {
               items: _productosConStock.map((p) {
                 return DropdownMenuItem<Producto>(
                   value: p,
-                  child: Text('${p.nombre} - \$${p.precio.toStringAsFixed(2)} (Stock: ${p.stock})'),
+                  child: Text(
+                    '${p.nombre} - \$${p.precio.toStringAsFixed(2)} (Stock: ${p.stock})',
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 );
               }).toList(),
               onChanged: _onProductoChanged,

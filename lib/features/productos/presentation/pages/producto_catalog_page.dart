@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../../../app/config/app_routes.dart';
 import '../../domain/entities/producto.dart';
 import '../templates/producto_catalog_template.dart';
 import '../viewmodels/producto_viewmodel.dart';
@@ -237,7 +238,21 @@ class _ProductoCatalogPageState extends State<ProductoCatalogPage> {
   Widget build(BuildContext context) {
     final vm = context.watch<ProductoViewModel>();
     return Scaffold(
-      appBar: AppBar(title: const Text('Productos de Cafetería')),
+      appBar: AppBar(
+        title: const Text('Productos de Cafetería'),
+        actions: [
+          IconButton(
+            tooltip: 'Clientes',
+            icon: const Icon(Icons.people_outline),
+            onPressed: () => Navigator.pushNamed(context, AppRoutes.clientes),
+          ),
+          IconButton(
+            tooltip: 'Pedidos',
+            icon: const Icon(Icons.receipt_long_outlined),
+            onPressed: () => Navigator.pushNamed(context, AppRoutes.pedidos),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _openCreateProductSheet,
         icon: const Icon(Icons.add),

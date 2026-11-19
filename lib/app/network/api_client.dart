@@ -18,9 +18,20 @@ class ApiClient {
         _baseUrl = baseUrl ?? ApiEndpoints.baseUrl;
 
   Uri _buildUri(String endpoint, [Map<String, dynamic>? queryParameters]) {
-    final String cleanEndpoint = endpoint.startsWith('/') ? endpoint : '/$endpoint';
-    final fullUrl = '$_baseUrl$cleanEndpoint';
-    
+    final bool isAbsolute =
+        endpoint.startsWith('http://') || endpoint.startsWith('https://');
+    final String fullUrl;
+    if (isAbsolute) {
+      fullUrl = endpoint;
+    } else {
+      final String cleanBase = _baseUrl.endsWith('/')
+          ? _baseUrl.substring(0, _baseUrl.length - 1)
+          : _baseUrl;
+      final String cleanEndpoint =
+          endpoint.startsWith('/') ? endpoint : '/$endpoint';
+      fullUrl = '$cleanBase$cleanEndpoint';
+    }
+
     final uri = Uri.parse(fullUrl);
     if (queryParameters != null && queryParameters.isNotEmpty) {
       return uri.replace(
@@ -141,7 +152,8 @@ class ApiClient {
 
   dynamic _handleResponse(http.Response response, Uri uri) {
     final statusCode = response.statusCode;
-    final bodyString = response.body.trim();
+    final bodyString =
+        utf8.decode(response.bodyBytes, allowMalformed: true).trim();
 
     dynamic decodedData;
     if (bodyString.isNotEmpty) {
